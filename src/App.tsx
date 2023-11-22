@@ -1,13 +1,35 @@
-import { useState } from 'react'
+import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
+// import { useAuthContext } from './hooks/useAuthContext'
+// import ScrollToTop from './components/ScrollToTop';
+import Chat from './pages/user/chat'
+import Login from './pages/auth/Login';
+import Register from './pages/auth/Register';
 import './App.css'
 
-function App() {
-  const [count, setCount] = useState(0)
+
+// CapactiorApp.addListener('appStateChange', ({ isActive }) => {
+//   console.log('App state changed. Is active?', isActive);
+// });
+
+
+
+function App() { 
+  // const { user } = useAuthContext()
 
   return (
-    <div className="text-red-400">
-      name
-    </div>
+    <Router>
+      <main className="App">
+        {/* <ScrollToTop> */}
+          <Routes>
+            {/* <Route exact path="/" element={<Home />} /> */}
+            <Route path="/" element={<Login />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/chat" element={<Chat />} />
+          </Routes>
+        {/* </ScrollToTop> */}
+      </main>
+    </Router>
   )
 }
 
