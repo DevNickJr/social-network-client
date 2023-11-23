@@ -46,6 +46,8 @@ function Chat() {
 
   useEffect(() => {
     const socket = io("http://localhost:4500");
+
+    socket.emit("setup", id)
     
     const fetchTest = async () => {
       const p = await fetch("http://localhost:4500/ping")
@@ -94,11 +96,17 @@ function Chat() {
 
       console.log({chat})
 
-      setConversationId(chat._id)
-
+      joinChat(chat._id)
+      
     } catch (error) {
       console.log("failed to start chat")
     }
+  }
+ 
+  const joinChat = (chatId: string) => {
+    console.log([id!, chatId]) 
+    setConversationId(chatId)
+    socket.emit("join chat", chatId)
   }
 
   return (
@@ -131,7 +139,7 @@ function Chat() {
                 <li 
                   key={conversation?._id}    
                   className="w-full px-4 py-2 text-white bg-blue-500 rounded-md cursor-pointer"
-                  onClick={() => setConversationId(conversation._id)}
+                  onClick={() => joinChat(conversation._id)}
                 >
                   {
                     conversation?.isGroupChat ?
@@ -160,7 +168,7 @@ function Chat() {
             </ul>
           </div>
         </div>
-       <Messages conversationId={conversationId} />
+       <Messages socket={socket} conversationId={conversationId} />
       </main>
     </Layout>
   );
